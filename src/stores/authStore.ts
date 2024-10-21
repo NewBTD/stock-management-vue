@@ -21,7 +21,11 @@ export const useAuthStore = defineStore('auth', {
         if (storedUser) {
           this.user = JSON.parse(storedUser);
         }
-    }  
+    },
+    log(){
+        console.log(this.user)
+        console.log(this.returnUrl)
+    }
   },
 });
 

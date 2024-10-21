@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
 import Inventory from "../views/Inventory.vue";
 import Login from "../views/Login.vue";
+import Logout from "../views/Logout.vue";
 import { useAuthStore } from "../stores/authStore.ts";
 
 const routes = [
@@ -20,14 +21,19 @@ const routes = [
     name: "login",
     component: Login,
   },
+  {
+    path: "/logout",
+    name: "logout",
+    component: Logout,
+  }
 ];
-
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
 router.beforeEach((to) => {
   const auth = useAuthStore();
+  
   auth.initialize(); // Initialize user state from localStorage
 
   const publicPages = ['/login'];
