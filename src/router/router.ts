@@ -3,6 +3,7 @@ import Dashboard from "../views/Dashboard.vue";
 import Inventory from "../views/Inventory.vue";
 import Login from "../views/Login.vue";
 import Logout from "../views/Logout.vue";
+import Itemdetail from "../views/Itemdetail.vue";
 import { useAuthStore } from "../stores/authStore.ts";
 
 const routes = [
@@ -15,6 +16,13 @@ const routes = [
     path: "/inventory",
     name: "inventory",
     component: Inventory,
+    children: [
+      {
+        path: "item/:id",
+        name: "itemdetail",
+        component: Itemdetail
+      },
+    ]
   },
   {
     path: "/login",
@@ -31,17 +39,14 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
-router.beforeEach((to) => {
-  const auth = useAuthStore();
-  
-  auth.initialize(); // Initialize user state from localStorage
 
-  const publicPages = ['/login'];
-  const authRequired = !publicPages.includes(to.path);
-
-  if (authRequired && !auth.user) {
-    auth.returnUrl = to.fullPath; // Store the intended route for redirection after login
-    return '/login'; // Redirect to login page
+router.beforeEach((to, from) => {
+  const authStore = useAuthStore();
+  console.log("hello from before each")
+  console.log(authStore.token);
+  // Redirect to login if accessing protected routes without being authenticated
+  if (to.path !== '/login' && !authStore.token) {
+    return '/login';
   }
 });
 

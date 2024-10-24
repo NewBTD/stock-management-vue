@@ -1,4 +1,6 @@
 <template>
+  <router-link to="/inventory/item/1">item</router-link>
+  <router-link to="/inventory">inven</router-link>
   <div class="container mx-auto">
     <div class="flex justify-end gap-4">
       <ToggleTheme />
@@ -14,7 +16,8 @@
         Editor Mode
       </button>
     </div>
-    <table class="w-full" :class="loading ? 'animate-pulse' : ''">
+    <router-view v-if="pageName === 'itemdetail'"></router-view>
+    <table v-else class="w-full" :class="loading ? 'animate-pulse' : ''">
       <thead>
         <tr class="bg-gray-600 text-white">
           <th class="px-6 py-3">Title</th>
@@ -27,20 +30,24 @@
       </thead>
       <tbody>
         <tr
-          class="border-gray-700 bg-gray-800 text-white"
+          class="border-gray-700 bg-gray-800 text-white hover:opacity-90 hover:cursor-pointer"
           v-for="product in products"
           :key="product.id"
         >
-          <td class="px-4 py-2">
+          <td @click="toItemDetail(product.id)" class="px-4 py-2">
             {{ product.title }}
           </td>
-          <td class="px-4 py-2">{{ product.price }}</td>
-          <td class="px-4 py-2">
+          <td @click="toItemDetail(product.id)" class="px-4 py-2">
+            {{ product.price }}
+          </td>
+          <td @click="toItemDetail(product.id)" class="px-4 py-2">
             {{ product.description }}
           </td>
 
-          <td class="px-4 py-2">{{ product.category }}</td>
-          <td class="px-4 py-2">
+          <td @click="toItemDetail(product.id)" class="px-4 py-2">
+            {{ product.category }}
+          </td>
+          <td @click="toItemDetail(product.id)" class="px-4 py-2">
             <img :src="product.image" alt="" class="w-16 h-16" />
           </td>
           <td v-if="isEditorMode">
@@ -64,12 +71,17 @@
     </table>
   </div>
 
-    <Teleport to="body">
-        <EditProduct v-if="isEditModalOpen" :editingProduct="editingProduct" @close="closeEditModal" :items="categories" />
-        <!-- <div v-if="isEditModalOpen">
+  <Teleport to="body">
+    <EditProduct
+      v-if="isEditModalOpen"
+      :editingProduct="editingProduct"
+      @close="closeEditModal"
+      :items="categories"
+    />
+    <!-- <div v-if="isEditModalOpen">
             
         </div> -->
-    </Teleport>
+  </Teleport>
   <Teleport to="body">
     <div
       v-if="isAddModalOpen"
@@ -106,16 +118,32 @@
       </div>
     </div>
   </Teleport>
-
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import axios from "axios";
 import AutocompleteProduct from "../components/Autocomplete-Product.vue";
 import EditProduct from "../components/EditProduct.vue";
 import Product from "../types/Product";
 import ToggleTheme from "../components/ToggleTheme.vue";
+import { useRoute, useRouter } from "vue-router";
+const route = useRoute();
+const router = useRouter();
+
+const pageName = ref("");
+
+watch(
+  () => route.name,
+  (newRoute, oldRoute) => {
+    pageName.value = newRoute;
+    console.log(newRoute);
+  }
+);
+
+const toItemDetail = (itemId) => {
+  router.push(`/inventory/item/${itemId}`);
+};
 
 const headers = {
   Authorization: "Bearer SOME-VALUE",
@@ -157,8 +185,8 @@ const handleModal = () => {
   isAddModalOpen.value = !isAddModalOpen.value;
 };
 const closeEditModal = () => {
-    isEditModalOpen.value = !isEditModalOpen.value;
-}
+  isEditModalOpen.value = !isEditModalOpen.value;
+};
 const newProduct: Product = ref({
   title: "",
   price: 0,
@@ -214,9 +242,9 @@ const removeProduct = (id) => {
 };
 
 const editProduct = (id) => {
-    isEditModalOpen.value = !isEditModalOpen.value;
-    const product = products.value.filter((item) => item.id === id)[0];
-    editingProduct.value = product;
+  isEditModalOpen.value = !isEditModalOpen.value;
+  const product = products.value.filter((item) => item.id === id)[0];
+  editingProduct.value = product;
 };
 </script>
 

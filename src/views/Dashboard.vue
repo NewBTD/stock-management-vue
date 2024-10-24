@@ -9,7 +9,6 @@ import {useAuthStore} from "../stores/authStore.ts"
 
 const authStore = useAuthStore();
 
-authStore.log()
 </script>
 
 <style scoped>

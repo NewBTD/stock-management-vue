@@ -40,28 +40,11 @@ const userDetail = ref({
 });
 const errorMessage = ref("");
 const authStore = useAuthStore();
-const headers = {
-  "Content-Type": "application/json",
-};
 
-const handleLogin = () => {
-  if (userDetail.value.username && userDetail.value.password) {
-    console.log(userDetail.value);
-    // Simulate an API call for authentication (replace with real API call)
-    axios
-      .post("https://dummyjson.com/auth/login", userDetail.value, { headers })
-      .then((response) => {
-        console.log(response.data);
-        authStore.login(userDetail.value.username);
-        errorMessage.value = "";
-        const returnUrl = authStore.returnUrl || "/";
-        router.push(returnUrl);
-      })
-      .catch((error) => {
-        console.error(error);
-        errorMessage.value = "Invalid username or password";
-      });
-  }
+
+const handleLogin = async () => {
+  const {success} = await authStore.login(userDetail.value.username, userDetail.value.password);
+  success? router.push("/") : errorMessage.value = "Invalid username or password";
 };
 </script>
 

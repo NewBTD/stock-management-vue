@@ -10,7 +10,6 @@ import {useAuthStore} from "../stores/authStore.ts";
 const  authStore = useAuthStore();
 
 authStore.logout();
-authStore.log()
 
 </script>
 
