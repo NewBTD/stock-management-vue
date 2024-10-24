@@ -14,11 +14,11 @@ console.log(console.log(route.name));
       <Nav></Nav>
     </nav>
     <main class="lg:col-span-10">
-      <RouterView />
+      <router-view></router-view >
     </main>
   </div>
   <div v-else class="dark:bg-slate-500 dark:text-white">
-    <RouterView/>
+    <router-view></router-view>
   </div>
 </template>
 

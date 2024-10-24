@@ -1,5 +1,8 @@
 <template>
   <div class="container mx-auto">
+    <div class="flex justify-end gap-4">
+      <ToggleTheme />
+    </div>
     <h1 class="text-3xl font-bold my-8">Inventory</h1>
     <div class="flex justify-end gap-4">
       <button @click="handleModal" class="px-4 py-2 bg-red-200">
@@ -112,6 +115,7 @@ import axios from "axios";
 import AutocompleteProduct from "../components/Autocomplete-Product.vue";
 import EditProduct from "../components/EditProduct.vue";
 import Product from "../types/Product";
+import ToggleTheme from "../components/ToggleTheme.vue";
 
 const headers = {
   Authorization: "Bearer SOME-VALUE",
@@ -128,11 +132,11 @@ onMounted(() => {
   axios
     .get("https://fakestoreapi.com/products", { headers })
     .then((response) => {
-      console.log("Response Status:", response.status);
-      console.log("Response Data:", response.data);
+      // console.log("Response Status:", response.status);
+      // console.log("Response Data:", response.data);
       products.value = response.data;
       loading.value = false;
-      console.log(("products", products.value));
+      // console.log(("products", products.value));
     })
     .catch((error) => {
       console.error("Error:", error.message);
@@ -142,10 +146,10 @@ onMounted(() => {
   axios
     .get("https://fakestoreapi.com/products/categories", { headers })
     .then((response) => {
-      console.log("Response Status:", response.status);
-      console.log("Response Data:", response.data);
+      // console.log("Response Status:", response.status);
+      // console.log("Response Data:", response.data);
       categories.value = response.data;
-      console.log(("categories", categories.value));
+      // console.log(("categories", categories.value));
     });
 });
 
