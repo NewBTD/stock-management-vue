@@ -173,7 +173,7 @@ const isEditorMode = ref(false);
 onMounted(() => {
   // Fetch products
   axios
-    .get("https://fakestoreapi.com/products", { headers })
+    .get("https://fakestoreapi.com/products")
     .then((response) => {
       // console.log("Response Status:", response.status);
       // console.log("Response Data:", response.data);
