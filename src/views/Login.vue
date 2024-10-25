@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center h-screen text-black">
+  <div class="flex justify-center items-center text-black">
     <form @submit.prevent="handleLogin" class="flex flex-col">
       <input
         v-model="userDetail.username"
@@ -31,7 +31,6 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/authStore";
-import axios from "axios";
 
 const router = useRouter();
 const userDetail = ref({

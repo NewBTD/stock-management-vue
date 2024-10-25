@@ -32,7 +32,6 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from "vue";
-import Product from "../types/Product";
 
 const props = defineProps({
   items: {

@@ -1,74 +1,83 @@
 <template>
-  <router-link to="/inventory/item/1">item</router-link>
-  <router-link to="/inventory">inven</router-link>
+  <div class="py-4 px-8 flex justify-between bg-white">
+    <input type="text" name="" id="" placeholder="Search..." class="border p-2">
+    <div>
+      <img :src="user?.image" alt="" class="w-20">
+      <button @click="handleLogut">Logout</button>
+    </div>
+  </div>
   <div class="container mx-auto">
     <div class="flex justify-end gap-4">
       <ToggleTheme />
     </div>
-    <h1 class="text-3xl font-bold my-8">Inventory</h1>
-    <div class="flex justify-end gap-4">
-      <button @click="handleModal" class="px-4 py-2 bg-red-200">
-        Add Product
-      </button>
-      <button class="px-4 py-2 bg-red-200">Filters</button>
-      <button class="px-4 py-2 bg-red-200">Download All</button>
-      <button @click="handleEditorMode" class="px-4 py-2 bg-red-200">
-        Editor Mode
-      </button>
+    <div class="flex justify-between gap-4 my-2">
+      <h1 class="text-3xl font-bold ml-4">Inventory</h1>
+      <div class="flex gap-4">
+        <button @click="handleModal" class="px-4 py-2 bg-blue-700 text-white rounded hover:opacity-80">
+          Add Product
+        </button>
+        <button class="px-4 py-2 bg-white border-2 hover:opacity-80 rounded">Filters</button>
+        <button class="px-4 py-2 bg-white border-2 hover:opacity-80 rounded">Download All</button>
+        <button @click="handleEditorMode" class="px-4 py-2 bg-white border-2 hover:opacity-80 rounded">
+          Editor Mode
+        </button>
+      </div>
     </div>
     <router-view v-if="pageName === 'itemdetail'"></router-view>
-    <table v-else class="w-full" :class="loading ? 'animate-pulse' : ''">
-      <thead>
-        <tr class="bg-gray-600 text-white">
-          <th class="px-6 py-3">Title</th>
-          <th class="px-6 py-3">Price</th>
-          <th class="px-6 py-3">Description</th>
-          <th class="px-6 py-3">Category</th>
-          <th class="px-6 py-3">Image</th>
-          <th class="px-6 py-3" v-if="isEditorMode">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          class="border-gray-700 bg-gray-800 text-white hover:opacity-90 hover:cursor-pointer"
-          v-for="product in products"
-          :key="product.id"
-        >
-          <td @click="toItemDetail(product.id)" class="px-4 py-2">
-            {{ product.title }}
-          </td>
-          <td @click="toItemDetail(product.id)" class="px-4 py-2">
-            {{ product.price }}
-          </td>
-          <td @click="toItemDetail(product.id)" class="px-4 py-2">
-            {{ product.description }}
-          </td>
-
-          <td @click="toItemDetail(product.id)" class="px-4 py-2">
-            {{ product.category }}
-          </td>
-          <td @click="toItemDetail(product.id)" class="px-4 py-2">
-            <img :src="product.image" alt="" class="w-16 h-16" />
-          </td>
-          <td v-if="isEditorMode">
-            <div class="flex gap-2">
-              <button
-                @click="removeProduct(product.id)"
-                class="px-2 py-1 bg-red-700 text-white"
-              >
-                x
-              </button>
-              <button
-                @click="editProduct(product.id)"
-                class="px-2 py-1 bg-yellow-700 text-white"
-              >
-                Edit
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div v-else class="mx-8 rounded bg-white text-gray-400">
+      <table class="w-full " :class="loading ? 'animate-pulse' : ''">
+        <thead>
+          <tr class=" ">
+            <th class="px-6 py-3">Title</th>
+            <th class="px-6 py-3">Price</th>
+            <th class="px-6 py-3">Description</th>
+            <th class="px-6 py-3">Category</th>
+            <th class="px-6 py-3">Image</th>
+            <th class="px-6 py-3" v-if="isEditorMode">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="border-gray-700 text-gray-700 border-b border-b-slate-100 hover:opacity-90 hover:cursor-pointer"
+            v-for="product in products"
+            :key="product.id"
+          >
+            <td @click="toItemDetail(product.id)" class="px-4 py-2">
+              {{ product.title }}
+            </td>
+            <td @click="toItemDetail(product.id)" class="px-4 py-2">
+              {{ product.price }}
+            </td>
+            <td @click="toItemDetail(product.id)" class="px-4 py-2">
+              {{ product.description }}
+            </td>
+  
+            <td @click="toItemDetail(product.id)" class="px-4 py-2">
+              {{ product.category }}
+            </td>
+            <td @click="toItemDetail(product.id)" class="px-4 py-2">
+              <img :src="product.image" alt="" class="w-16 h-16" />
+            </td>
+            <td v-if="isEditorMode">
+              <div class="flex gap-2">
+                <button
+                  @click="removeProduct(product.id)"
+                  class="px-2 py-1 bg-red-700 text-white"
+                >
+                  x
+                </button>
+                <button
+                  @click="editProduct(product.id)"
+                  class="px-2 py-1 bg-yellow-700 text-white"
+                >
+                  Edit
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <Teleport to="body">
@@ -128,6 +137,12 @@ import EditProduct from "../components/EditProduct.vue";
 import Product from "../types/Product";
 import ToggleTheme from "../components/ToggleTheme.vue";
 import { useRoute, useRouter } from "vue-router";
+import {useAuthStore} from "../stores/authStore";
+
+const authStore = useAuthStore();
+const user = ref(authStore.user)
+
+
 const route = useRoute();
 const router = useRouter();
 
@@ -246,6 +261,11 @@ const editProduct = (id) => {
   const product = products.value.filter((item) => item.id === id)[0];
   editingProduct.value = product;
 };
+
+const handleLogut = () => {
+  authStore.logout();
+  router.push("/login");
+}
 </script>
 
 <style scoped></style>

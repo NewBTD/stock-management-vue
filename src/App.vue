@@ -9,7 +9,7 @@ console.log(console.log(route.name));
 </script>
 
 <template>
-  <div v-if="!isLoginRoute" class="hidden lg:grid lg:grid-cols-12 dark:bg-slate-500 dark:text-white">
+  <div v-if="!isLoginRoute" class="hidden lg:grid lg:grid-cols-12 dark:bg-slate-100 dark:text-gray-500">
     <nav class="lg:col-span-2">
       <Nav></Nav>
     </nav>
